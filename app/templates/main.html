@@ -2,27 +2,35 @@
 <html lang="ko">
 <head>
     <title>main page</title>
+    <script>
+        function validateForm(){ 
+            var name = document.getElementById('Name').value;
+            var studentNumber = document.getElementById('StudentNumber').value;
+            var major = document.getElementById('Major').value;
+        }
+    </script>
 </head>
 <body>
-    <p><b>Name</b> <input type="text" id="Name" name="Name"/> </p>
-    <p><b>Student Number</b> <input type="text" id="StudentNumber" name="StudentNumber"/></p>
-    <p><b>Major</b> <input type="text" id="Major" name="Major" /></p>
-    <label>Gender</label><br>
-    <input type="radio" name="gender" value="male"> Male <br>
-    <input type="radio" name="gender" value="female"> Female <br>
-
-    <label>Programming Languages</label><br>
-
-    <input type="checkbox" id="python" name="PL_list" value="Python">
-    <label for="python">Python</label><br>
-
-    <input type="checkbox" id="java" name="PL_list" value="Java">
-    <label for="java">Java</label><br>
-
-    <input type="checkbox" id="html" name="PL_list" value="HTML">
-    <label for="html">HTML</label><br>
-
-    <input type="checkbox" id="cpp" name="PL_list" value="C++">
-    <label for="cpp">C++</label><br>
+    <form method="POST" onsubmit="return validateForm()" action= "/result">
+        
+        <p><b>Name</b> <input type="text" id="Name" name="Name"/> </p>
+        <p><b>Student Number</b> <input type="text" id="StudentNumber" name="StudentNumber"/></p>
+        <div class="gender">
+            <p>Gender</p>
+            <label><input type="radio" name="Gender" value="Male" />Male</label> 
+            <label><input type="radio" name="Gender" value="Female"/>Female</label>
+        </div>
+        <p><b>Major</b> <input type="text" id="Major" name="Major" /></p>
+        <div class="PL_list">
+            <p>Programming Languages</p>
+            <label><input type="checkbox" value="Python" name="PL_list" />Python</label>
+            <label><input type="checkbox" value="Java" name="PL_list" />Java</label>
+            <label><input type="checkbox" value="HTML" name="PL_list" />HTML</label>
+            <label><input type="checkbox" value="C++" name="PL_list"/>C++</label>
+        </div>
+        <p><button type='submit' value="result.html">submit</button></p>
+        
+    </form>
+    
 </body>
 </html>
