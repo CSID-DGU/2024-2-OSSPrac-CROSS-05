@@ -1,5 +1,5 @@
-<h4>Collaborative Repository Open Source Software</h4>
 <h1>📚Team CROSS📚</h1>
+<h4>Collaborative Repository Open Source Software</h4>
 <h2>📍Members</h2>
 
 |      |  이름  |       학과       |    학번    |   Github ID |
