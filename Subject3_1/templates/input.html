@@ -3,6 +3,7 @@
 <head>
     <title>main page</title>
     <script>
+        // 필수 입력 필드가 제대로 입력되었는지 확인
         function validateForm(){ 
             var name = document.getElementById('Name').value;
             var studentNumber = document.getElementById('StudentNumber').value;
@@ -11,16 +12,21 @@
     </script>
 </head>
 <body>
-    <form method="POST" onsubmit="return validateForm()" action= "/result">
+    <!-- 사용자 입력 폼 -->
+    <form method="POST" onsubmit="return validateForm()" action="/result">
         
         <p><b>Name</b> <input type="text" id="Name" name="Name"/> </p>
+        
         <p><b>Student Number</b> <input type="text" id="StudentNumber" name="StudentNumber"/></p>
+        
         <div class="gender">
             <p>Gender</p>
             <label><input type="radio" name="Gender" value="Male" />Male</label> 
             <label><input type="radio" name="Gender" value="Female"/>Female</label>
         </div>
+        
         <p><b>Major</b> <input type="text" id="Major" name="Major" /></p>
+        
         <div class="PL_list">
             <p>Programming Languages</p>
             <label><input type="checkbox" value="Python" name="PL_list" />Python</label>
@@ -28,6 +34,7 @@
             <label><input type="checkbox" value="HTML" name="PL_list" />HTML</label>
             <label><input type="checkbox" value="C++" name="PL_list"/>C++</label>
         </div>
+        
         <p><button type='submit' value="result.html">submit</button></p>
         
     </form>
