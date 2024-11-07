@@ -2,6 +2,44 @@
 <html lang="ko">
 <head>
     <title>main page</title>
+    <style>
+        .gender, .PL_list {
+            margin: 20px 0;
+            text-align: left;
+        }
+
+        .gender label, .PL_list label {
+            display: inline-block;
+            margin-right: 10px;
+        }
+
+        .error-message {
+            color: red;
+            font-size: 12px;
+            text-align: left;
+            margin-top: 5px;
+        }
+
+        button[type='submit'] {
+            width: 100%;
+            background-color: #e74c3c;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button[type='submit']:hover {
+            background-color: #d43f31;
+        }
+
+        button[type='submit']:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+    </style>
     <script>
         // 필수 입력 필드가 제대로 입력되었는지 확인
         function validateForm(){ 
