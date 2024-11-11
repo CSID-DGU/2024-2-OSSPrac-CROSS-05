@@ -12,29 +12,34 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            margin: 10px;
+            margin: 10px; 
             text-align: center;
             flex-direction: column;
         }
-        .container {
-            display: flex;
-            justify-content: center;
-            align-items: center; 
-            flex-direction: column;
-            gap: 20px;
-            padding: 20px;
+        h1 {
+            padding-bottom: 20px;
         }
-        .leader-block, .student-block {
-            display : flex;
-            position: relative; 
-            padding: 5px 10px 0px 60px;
+        .container {
+            display: grid;
+            justify-content: center;
+            grid-template-columns: repeat(2, 1fr); 
+            gap: 3vh 3vw;
+            width: 100%;
+            max-width: 800px;
+        }
+        /* 구성원 카드 공통 스타일 */
+        .member-block {
+            display: flex;
+            align-items: center;
             border: 1px solid #ccc;
             border-radius: 8px;
             box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-            width: 450px;
             background-color: #f9f9f9;
+            position: relative;
+            padding: 15px;
+            transition: background-color 0.3s;
         }
-        .leader-block:hover, .student-block:hover {
+        .member-block:hover {
             background-color: #EAEAEA;
         }
         .label {
@@ -49,18 +54,25 @@
             border-radius: 5px;
         }
         .profile-img {
-            width: 100px; 
-            height: 100px;
-            border-radius: 50%; 
-            margin-right: 30px;
-            object-fit: cover; 
+            width: 80px;
+            height: 80px;
+            margin-right: 20px;
+            border-radius: 50%;
+            object-fit: cover;
         }
         .info {
-            flex-grow: 1; 
-            text-align: center; 
+            flex-grow: 1;
+            text-align: left;
         }
-        button {
-            cursor: pointer;
+        /* 반응형 스타일 */
+        @media (max-width: 600px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+            .profile-img {
+                width: 60px;
+                height: 60px;
+            }
         }
     </style>
     <script>
@@ -74,48 +86,48 @@
     </script>
 </head>
 <body>
-    <div class="header-footer"></div> 
     <h1>학생 정보 출력</h1>
     <div class="container">
-        <!--{% for name, student_number, img in students %}-->
-            <div class="leader-block">
-                <span class="label" style="font-size:15px;right:7.5px">Leader</span>
-                <img src="man.png" alt="Profile Picture" class="profile-img"> <!--사진이나 그림이 들어가는 곳입니다!-->
-                <div class='info'>
-                    <p><strong>이름:</strong> {{ name }}</p>
-                    <p><strong>학번:</strong> {{ student_number }}</p>
-                </div>
+        <!-- 구성원 카드 반복 -->
+        <div class="member-block">
+            <span class="label">Leader</span>
+            <img src="man.png" alt="Profile Picture" class="profile-img">
+            <div class="info">
+                <p><strong>이름:</strong> {{ name }}</p>
+                <p><strong>학번:</strong> {{ student_number }}</p>
             </div>
-            <div class="student-block">
-                <span class="label">Member</span>
-                <img src="man.png" alt="Profile Picture" class="profile-img"> <!--사진이나 그림이 들어가는 곳입니다!-->
-                <div class='info'>
-                    <p><strong>이름:</strong> {{ name }}</p>
-                    <p><strong>학번:</strong> {{ student_number }}</p>
-                </div>
+        </div>
+        <div class="member-block">
+            <span class="label">Member</span>
+            <img src="man.png" alt="Profile Picture" class="profile-img">
+            <div class="info">
+                <p><strong>이름:</strong> {{ name }}</p>
+                <p><strong>학번:</strong> {{ student_number }}</p>
             </div>
-            <div class="student-block">
-                <span class="label">Member</span>
-                <img src="man.png" alt="Profile Picture" class="profile-img"> <!--사진이나 그림이 들어가는 곳입니다!-->
-                <div class='info'>
-                    <p><strong>이름:</strong> {{ name }}</p>
-                    <p><strong>학번:</strong> {{ student_number }}</p>
-                </div>
+        </div>
+        <div class="member-block">
+            <span class="label">Member</span>
+            <img src="man.png" alt="Profile Picture" class="profile-img">
+            <div class='info'>
+                <p><strong>이름:</strong> {{ name }}</p>
+                <p><strong>학번:</strong> {{ student_number }}</p>
             </div>
-            <div class="student-block">
-                <span class="label">Member</span>
-                <img src="man.png" alt="Profile Picture" class="profile-img"> <!--사진이나 그림이 들어가는 곳입니다!-->
-                <div class='info'>
-                    <p><strong>이름:</strong> {{ name }}</p>
-                    <p><strong>학번:</strong> {{ student_number }}</p>
-                </div>
+        </div>
+        <div class="member-block">
+            <span class="label">Member</span>
+            <img src="man.png" alt="Profile Picture" class="profile-img">
+            <div class='info'>
+                <p><strong>이름:</strong> {{ name }}</p>
+                <p><strong>학번:</strong> {{ student_number }}</p>
             </div>
-        <!--{% endfor %}-->
+        </div>
     </div>
     <footer>
-        <h5>📞 안내: <button onclick="showContactInfo()"> 팀 긴급연락</button> 
-            <button onclick="openContactPage()"> 팀 연락정보</button> </h5>
-    </footer> 
-    <div class="header-footer"></div> <!-- 하단 빨간색 공간 -->
+        <h5>📞 안내: 
+            <button onclick="showContactInfo()"> 팀 긴급연락</button> 
+            <button onclick="openContactPage()"> 팀 연락정보</button>
+        </h5>
+    </footer>
 </body>
 </html>
+
