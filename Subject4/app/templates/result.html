@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>result Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            text-align: center;
+            flex-direction: column;
+        }
+
+        table {
+            background-color: #ffffff;
+            border-collapse: collapse;
+            width: 30%;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 0 auto;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 15px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #e74c3c;
+            color: white;
+            font-weight: bold;
+        }
+
+        td {
+            background-color: #ffffff;
+        }
+
+        .button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            color: #ffffff;
+            background-color: #e74c3c;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        tr:hover > td {
+            background-color: #F6F6F6;
+        }
+
+        tr:hover > th {
+            background-color: #CC3D3D;
+        }    
+
+        .button:hover {
+            background-color: #d43f31;
+        }
+    </style>
+</head>
+<body>
+    <!-- 사용자가 입력한 결과를 표시하는 테이블 -->
+    <table>
+        <tr>
+            <th>Name</th>
+            <td>{{ Name }}</td>
+        </tr>
+        <tr>
+            <th>Student Number</th>
+            <td>{{ StudentNumber }}</td>
+        </tr>
+        <tr>
+            <th>Gender</th>
+            <td>{{ Gender }}</td>
+        </tr>
+        <tr>
+            <th>Major</th>
+            <td>{{ Major }}</td>
+        </tr>
+        <tr>
+            <th>Languages</th>
+            <td>{% if Languages %}{{ Languages }}{% endif %}{% if OtherPL and OtherPL != "" %}{% if Languages %}, {% endif %}{{ OtherPL }}{% endif %}</td>
+        </tr>
+    </table>
+
+    <!-- 메인 페이지로 돌아가는 버튼 -->
+    <a href="/" class="button">Go back</a>
+</body>
+</html>
