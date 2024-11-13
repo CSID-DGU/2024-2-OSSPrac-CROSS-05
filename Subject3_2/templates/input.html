@@ -23,6 +23,7 @@
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             width: 400px;
+            position: relative;
         }
 
         h1 {
@@ -31,18 +32,74 @@
             color: #333;
         }
 
+        .team-name-group {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 10px;
+        }
+
+        .team-name-group input[type="text"] {
+            width: 50%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+            text-align: center;
+        }
+
         .person-block {
             margin-bottom: 15px;
             padding: 10px;
             border: 1px solid #ccc;
             border-radius: 8px;
             background-color: #f9f9f9;
+            position: relative;
+            transform: translateY(50px);
+            opacity: 0;
+            animation: slideUp 0.5s ease forwards;
         }
 
-        p {
-            margin: 15px 0;
+        @keyframes slideUp {
+            0% {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+            100% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .delete-button {
+            position: absolute;
+            top: -15px;
+            right: -10px;
+            background-color: #ffffff;
+            color: black;
+            border: 1px solid black;
+            border-radius: 5px;
+            width: 35px;
+            height: 35px;
+            cursor: pointer;
             font-weight: bold;
-            color: #333;
+            line-height: 28px;
+            text-align: center;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .person-number {
+            position: absolute;
+            top: -15px;
+            left: -15px;
+            background-color: #333;
+            color: white;
+            border-radius: 50%;
+            width: 38px;
+            height: 38px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
         }
 
         .input-group {
@@ -60,23 +117,15 @@
         }
 
         .email-group {
-            width: 100%; /* 다른 입력 필드와 동일한 너비 */
+            width: 100%;
             display: flex;
             align-items: center;
             gap: 5px;
             box-sizing: border-box;
         }
 
-        .email-group input[type="text"] {
-            width: 48%; /* 이메일 앞부분의 너비 */
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            box-sizing: border-box;
-        }
-
-        .email-domain-select {
-            width: 48%; /* 도메인 선택 부분의 너비 */
+        .email-group input[type="text"], .email-domain-select {
+            width: 50%;
             padding: 10px;
             border: 1px solid #ccc;
             border-radius: 5px;
@@ -96,20 +145,10 @@
             box-sizing: border-box;
         }
 
-        .role-group label {
-            font-weight: bold;
-            color: #333;
-        }
-
         .role-options {
             display: flex;
             justify-content: center;
             gap: 15px;
-        }
-
-        .role-options label {
-            font-weight: normal;
-            color: #555;
         }
 
         button[type='button'], button[type='submit'] {
@@ -138,8 +177,16 @@
 <body>
     <form action="/result" method="POST" id="studentForm">
         <h1>학생 정보 입력</h1>
+        
+        <!-- 팀명 입력란 -->
+        <div class="team-name-group">
+            <input type="text" name="team_name" placeholder="팀명" required>
+        </div>
+
         <div id="personContainer">
             <div class="person-block">
+                <div class="person-number">1</div>
+                <button class="delete-button" onclick="removePerson(this)">X</button>
                 <div class="input-group">
                     <p>이름: </p>
                     <input type="text" name="name[]" required>
@@ -148,27 +195,27 @@
                     <p>역할:</p>
                     <div class="role-group">
                         <div class="role-options">
-                            <label><input type="radio" name="role0" value="팀원" required> 팀원</label>
-                            <label><input type="radio" name="role0" value="팀장"> 팀장</label>
+                            <label><input type="radio" name="role_0" value="팀원" required> 팀원</label>
+                            <label><input type="radio" name="role_0" value="팀장"> 팀장</label>
                         </div>
                     </div>
                 </div>
                 <div class="input-group">
                     <p>학과: </p>
-                    <input type="text" name="StudentNumber[]" required>
+                    <input type="text" name="major[]" required>
                 </div>
                 <div class="input-group">
                     <p>전화번호: </p>
-                    <input type="tel" name="phone[]" pattern="[0-9]{3}-[0-9]{3,4}-[0-9]{4}" placeholder="010-1234-5678" required>
+                    <input type="tel" name="phone[]" pattern="[0-9]{3}-[0-9]{3,4}-[0-9]{4}" placeholder="-를 포함해서 입력" required>
                 </div>
                 <div class="input-group">
                     <p>이메일: </p>
                     <div class="email-group">
                         <input type="text" name="emailLocal[]" required placeholder="이메일">
                         @
-                        <select class="email-domain-select" name="emailDomain[]" id="emailDomainSelect" onchange="toggleCustomDomain(this)">
-                            <option value="gmail.com">gmail.com</option>
+                        <select class="email-domain-select" name="emailDomain[]" onchange="toggleCustomDomain(this)">
                             <option value="naver.com">naver.com</option>
+                            <option value="gmail.com">gmail.com</option>
                             <option value="daum.net">daum.net</option>
                             <option value="직접 입력">직접 입력</option>
                         </select>
@@ -179,17 +226,17 @@
         <button type="button" onclick="addPerson()">추가</button>
         <button type="submit">제출</button>
     </form>
-
     <script>
-        // 새 입력 필드를 추가하는 함수
+        // 새로운 입력 필드를 추가하는 함수
         function addPerson() {
             const container = document.getElementById("personContainer");
-            const personCount = container.children.length; // 현재 인원 수를 기준으로 이름 설정
+            const personCount = container.children.length;
 
-            // 새로운 사람 정보를 위한 입력 블록 생성
             const personBlock = document.createElement("div");
             personBlock.className = "person-block";
-            personBlock.innerHTML = `
+            personBlock.innerHTML = 
+                `<div class="person-number">${personCount + 1}</div>
+                <button class="delete-button" onclick="removePerson(this)">X</button>
                 <div class="input-group">
                     <p>이름: </p>
                     <input type="text" name="name[]" required>
@@ -198,55 +245,73 @@
                     <p>역할:</p>
                     <div class="role-group">
                         <div class="role-options">
-                            <label><input type="radio" name="role${personCount}" value="팀원" required> 팀원</label>
-                            <label><input type="radio" name="role${personCount}" value="팀장"> 팀장</label>
+                            <label><input type="radio" name="role_${personCount}" value="팀원" required> 팀원</label>
+                            <label><input type="radio" name="role_${personCount}" value="팀장"> 팀장</label>
                         </div>
                     </div>
                 </div>
                 <div class="input-group">
                     <p>학과: </p>
-                    <input type="text" name="StudentNumber[]" required>
+                    <input type="text" name="major[]" required>
                 </div>
                 <div class="input-group">
                     <p>전화번호: </p>
-                    <input type="tel" name="phone[]" pattern="[0-9]{3}-[0-9]{3,4}-[0-9]{4}" placeholder="010-1234-5678" required>
+                    <input type="tel" name="phone[]" pattern="[0-9]{3}-[0-9]{3,4}-[0-9]{4}" placeholder="-를 포함해서 입력" required>
                 </div>
                 <div class="input-group">
                     <p>이메일: </p>
                     <div class="email-group">
                         <input type="text" name="emailLocal[]" required placeholder="이메일">
                         @
-                        <select class="email-domain-select" name="emailDomain[]" id="emailDomainSelect${personCount}" onchange="toggleCustomDomain(this)">
-                            <option value="gmail.com">gmail.com</option>
-                            <option value="naver.com">naver.com</option>
+                        <select class="email-domain-select" name="emailDomain[]" onchange="toggleCustomDomain(this)">
+                            <option value="gmail.com">naver.com</option>
+                            <option value="naver.com">gmail.com</option>
                             <option value="daum.net">daum.net</option>
                             <option value="직접 입력">직접 입력</option>
                         </select>
                     </div>
-                </div>
-            `;
+                </div>`;
 
-            // 입력 블록을 personContainer에 추가
             container.appendChild(personBlock);
         }
 
-        // '직접 입력' 선택 시 select 요소가 text input으로 변환
+        // 사람 정보 블록을 삭제하는 함수
+        function removePerson(button) {
+            const container = document.getElementById("personContainer");
+            if (container.children.length > 1) {
+                button.parentElement.remove();
+                updatePersonNumbers();
+            } else {
+                alert("입력하는 팀원 수는 최소 한명 이상이어야 합니다.");
+            }
+        }
+
+        // 입력 폼 번호 업데이트 함수
+        function updatePersonNumbers() {
+            const container = document.getElementById("personContainer");
+            const personBlocks = container.querySelectorAll(".person-block");
+            personBlocks.forEach((block, index) => {
+                block.querySelector(".person-number").textContent = index + 1;
+                const radioButtons = block.querySelectorAll('input[type="radio"]');
+                radioButtons[0].name = `role_${index}`;
+                radioButtons[1].name = `role_${index}`;
+            });
+        }
+
+        // '직접 입력' 선택 시 select 요소를 input 요소로 변환
         function toggleCustomDomain(selectElement) {
             if (selectElement.value === "직접 입력") {
-                // select 요소를 input 요소로 대체
                 const customInput = document.createElement("input");
                 customInput.type = "text";
                 customInput.name = "emailDomain[]";
                 customInput.placeholder = "직접 입력";
                 customInput.className = "email-domain-select";
-                customInput.value = "";  // 기본값 비워두기
+                customInput.value = ""; 
                 customInput.onblur = function() {
                     revertToSelect(customInput);
-                };  // input에서 벗어날 때 select로 복구
-
-                // 기존 select 요소를 customInput으로 교체
+                };
                 selectElement.parentNode.replaceChild(customInput, selectElement);
-                customInput.focus();  // 새 input에 포커스 설정
+                customInput.focus();
             }
         }
 
@@ -258,16 +323,11 @@
             selectElement.onchange = function() {
                 toggleCustomDomain(selectElement);
             };
-
-            // option 요소 추가
-            selectElement.innerHTML = `
+            selectElement.innerHTML = 
+                `<option value="naver.com">naver.com</option>
                 <option value="gmail.com">gmail.com</option>
-                <option value="naver.com">naver.com</option>
                 <option value="daum.net">daum.net</option>
-                <option value="직접 입력">직접 입력</option>
-            `;
-
-            // 입력한 텍스트가 있을 경우 직접 입력 옵션으로 유지
+                <option value="직접 입력">직접 입력</option>`;
             if (inputElement.value) {
                 const customOption = document.createElement("option");
                 customOption.value = inputElement.value;
@@ -275,8 +335,6 @@
                 customOption.selected = true;
                 selectElement.appendChild(customOption);
             }
-
-            // input 요소를 select 요소로 교체
             inputElement.parentNode.replaceChild(selectElement, inputElement);
         }
     </script>

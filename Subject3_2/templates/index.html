@@ -3,52 +3,87 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"> -->
-    <title>학생 정보 출력</title>
+    <title>팀 포털</title>
     <style>
-        .container {
+        /* 배경 및 기본 스타일 */
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #e74c3c, #ff7e5f, #fcd2b1);
+            color: #ffffff;
+            margin: 0;
             display: flex;
             justify-content: center;
-            gap: 20px;
-            padding: 20px;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
         }
-        .student-block {
-            background-color: #f9f9f9;
-            padding: 15px;
-            border: 1px solid #ccc;
+        .container {
+            text-align: center;
+            max-width: 600px;
+        }
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            color: #ffffff;
+        }
+        p {
+            font-size: 1.1em;
+            font-weight: bold;
+            line-height: 1.6;
+            color: #f8e8e8;
+            margin-bottom: 20px;
+        }
+        .button-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+            justify-content: center;
+        }
+        .button {
+            padding: 12px 24px;
+            font-size: 1em;
+            font-weight: bold;
             border-radius: 8px;
-            width: 200px;
-            text-align: center;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            text-decoration: none;
+            transition: background-color 0.3s, color 0.3s;
+            cursor: pointer;
         }
-        h1, h3, h5 {
-            text-align: center;
+        .button-primary {
+            background-color: #d84315;
+            color: #ffffff;
+            border: none;
+        }
+        .button-primary:hover {
+            background-color: #bf360c;
+        }
+        .button-secondary {
+            background-color: #000000;
+            color: #ffffff;
+            border: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .button-secondary:hover {
+            background-color: #333333;
+        }
+        .button-secondary .icon {
+            width: 25px;
+            height: 25px;
         }
     </style>
-    <script>
-        function showContactInfo() {
-            alert("긴급전화: 010-1234-5678");
-        }
-        function openContactPage() {
-            window.open("/contact", "contactPage", "width=600,height=400");
-        }
-        function openInputPage() {
-            window.open("/input", "InputPage", "width=800,height=600");
-        }
-    </script>
+    
 </head>
 <body>
-    <h1>학생 정보 출력</h1>
     <div class="container">
-        <div class="student-block">
-            <p><strong>이름:</strong> </p>
-            <p><strong>학번:</strong> </p>
-        </div>        
+        <h1>학생정보 출력</h1>
+        <p>💡designed by💡<br>2024-OSSPrac-CROSS-05</p>
+        <div class="button-group">
+            <a href="/input" class="button button-primary">정보 입력 바로가기</a>
+            <a href="https://github.com/CSID-DGU/2024-2-OSSPrac-CROSS-05" class="button button-secondary">
+                <img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" alt="GitHub" class="icon">Github repository
+            </a>
+        </div>
     </div>
-    <h3> 팀 구성원 정보 입력 페이지 <button onclick="openInputPage()"> 이동 </button> </h3>
-    <footer>
-        <h5>📞 안내: <button onclick="showContactInfo()"> 팀 긴급연락</button> 
-            <button onclick="openContactPage()"> 팀 연락정보</button> </h5>
-    </footer>
 </body>
 </html>

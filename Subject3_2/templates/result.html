@@ -12,7 +12,7 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            margin: 10px; 
+            margin: 10px;
             text-align: center;
             flex-direction: column;
         }
@@ -22,12 +22,11 @@
         .container {
             display: grid;
             justify-content: center;
-            grid-template-columns: repeat(2, 1fr); 
+            grid-template-columns: repeat(2, 1fr);
             gap: 3vh 3vw;
             width: 100%;
             max-width: 800px;
         }
-        /* 구성원 카드 공통 스타일 */
         .member-block {
             display: flex;
             align-items: center;
@@ -38,6 +37,7 @@
             position: relative;
             padding: 15px;
             transition: background-color 0.3s;
+            cursor: pointer;
         }
         .member-block:hover {
             background-color: #EAEAEA;
@@ -54,8 +54,8 @@
             border-radius: 5px;
         }
         .profile-img {
-            width: 80px;
-            height: 80px;
+            width: 70px;
+            height: 70px;
             margin-right: 20px;
             border-radius: 50%;
             object-fit: cover;
@@ -64,70 +64,134 @@
             flex-grow: 1;
             text-align: left;
         }
-        /* 반응형 스타일 */
-        @media (max-width: 600px) {
-            .container {
-                grid-template-columns: 1fr;
-            }
-            .profile-img {
-                width: 60px;
-                height: 60px;
-            }
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .action-button {
+            display: inline-flex;
+            align-items: center;
+            padding: 7px 15px;
+            background-color: #ffffff;
+            color: #333333;
+            border: 1.5px solid #333333;
+            border-radius: 5px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .action-button:hover {
+            background-color: #f0f0f0;
+            color: #000000;
+        }
+        .save-button::before {
+            content: "\1F4BE";
+            font-size: 15px;
+            margin-right: 8px;
+        }
+        .edit-button::before {
+            content: "\1F4DD";
+            font-size: 15px;
+            margin-right: 8px;
+        }
+        .info-icon {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            font-size: 30px;
+            cursor: pointer;
+        }
+        .tooltip {
+            position: fixed;
+            top: 60px;
+            right: 20px;
+            background-color: #333;
+            color: #fff;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 16px;
+            display: none;
+            transition: opacity 0.5s ease;
+            opacity: 0;
+        }
+        .tooltip.show {
+            display: block;
+            opacity: 1;
         }
     </style>
+    <!-- html2pdf.js 라이브러리 추가 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
     <script>
-        function showContactInfo() {
-            alert("긴급전화: 010-1234-5678");
+        // 연락처 창 열기
+        function openContact(name, email, phone) {
+            const url = `/contact?name=${encodeURIComponent(name)}&email=${encodeURIComponent(email)}&phone=${encodeURIComponent(phone)}`;
+            window.open(url, "contactPage", "width=600,height=400");
         }
 
-        function openContactPage() {
-            window.open("/contact", "contactPage", "width=600,height=400");
+        // 입력 폼으로 돌아가는 함수
+        function goToEditForm() {
+            window.location.href = "/input"; // 입력 폼의 경로로 이동
+        }
+
+        // PDF로 저장하는 함수
+        function saveAsPDF() {
+            const element = document.querySelector('body');  // 전체 화면을 PDF로 저장
+            const options = {
+                margin: 0,
+                filename: '{{ team_name }}_info.pdf',  // 팀명 기반 파일명 설정
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2 },
+                jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
+            };
+
+            // PDF 저장 시 버튼들을 임시로 숨김
+            document.querySelector('.button-group').style.display = 'none';
+            document.querySelector('.info-icon').style.display = 'none';
+            html2pdf().set(options).from(element).save().then(() => {
+                // PDF 저장 후 버튼 다시 표시
+                document.querySelector('.button-group').style.display = 'flex';
+                document.querySelector('.info-icon').style.display = 'block';
+            });
+        }
+
+        // 정보 아이콘 클릭 시 말풍선 메시지 표시
+        function showInfoMessage() {
+            const tooltip = document.querySelector('.tooltip');
+            tooltip.classList.add('show');
+            setTimeout(() => {
+                tooltip.classList.remove('show');
+            }, 3000);
         }
     </script>
 </head>
 <body>
-    <h1>학생 정보 출력</h1>
-    <div class="container">
-        <!-- 구성원 카드 반복 -->
-        <div class="member-block">
-            <span class="label">Leader</span>
-            <img src="man.png" alt="Profile Picture" class="profile-img">
+    <!-- 정보 아이콘 버튼 -->
+    <div class="info-icon" onclick="showInfoMessage()">ℹ️</div>
+    <div class="tooltip">카드 클릭시 연락처 정보 조회 가능</div>
+    
+    <!-- 입력받은 팀명을 제목에 표시 -->
+    <h1>📚 {{ team_name }} 구성원 📚</h1>
+    
+    <div class="container" id="team-info">
+        {% for member in teamMembers %}
+        <div class="member-block" onclick="openContact('{{ member.name }}', '{{ member.email }}', '{{ member.phone }}')">
+            <span class="label">{{ 'Leader' if member.role == '팀장' else 'Member' }}</span>
+            <img src="{{ member.profilePicture }}" alt="Profile Picture" class="profile-img">
             <div class="info">
-                <p><strong>이름:</strong> {{ name }}</p>
-                <p><strong>학번:</strong> {{ student_number }}</p>
+                <p><strong>이름:</strong> {{ member.name }}</p>
+                <p><strong>학과:</strong> {{ member.major }}</p>
             </div>
         </div>
-        <div class="member-block">
-            <span class="label">Member</span>
-            <img src="man.png" alt="Profile Picture" class="profile-img">
-            <div class="info">
-                <p><strong>이름:</strong> {{ name }}</p>
-                <p><strong>학번:</strong> {{ student_number }}</p>
-            </div>
-        </div>
-        <div class="member-block">
-            <span class="label">Member</span>
-            <img src="man.png" alt="Profile Picture" class="profile-img">
-            <div class='info'>
-                <p><strong>이름:</strong> {{ name }}</p>
-                <p><strong>학번:</strong> {{ student_number }}</p>
-            </div>
-        </div>
-        <div class="member-block">
-            <span class="label">Member</span>
-            <img src="man.png" alt="Profile Picture" class="profile-img">
-            <div class='info'>
-                <p><strong>이름:</strong> {{ name }}</p>
-                <p><strong>학번:</strong> {{ student_number }}</p>
-            </div>
-        </div>
+        {% endfor %}
     </div>
-    <footer>
-        <h5>📞 안내: 
-            <button onclick="showContactInfo()"> 팀 긴급연락</button> 
-            <button onclick="openContactPage()"> 팀 연락정보</button>
-        </h5>
-    </footer>
+
+    <!-- 버튼 그룹 -->
+    <div class="button-group">
+        <button class="action-button edit-button" onclick="goToEditForm()">다시 입력</button>
+        <button class="action-button save-button" onclick="saveAsPDF()">PDF로 저장</button>
+    </div>
 </body>
 </html>
-
