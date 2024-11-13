@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>contact Page</title>
+    <title>Contact Page</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -15,19 +15,12 @@
             text-align: center;
             flex-direction: column;
         }
-
         .contact-header {
             font-size: 24px;
             font-weight: bold;
             color: #333;
             margin-bottom: 30px;
         }
-
-        .contact-header span {
-            font-size: 30px;
-            margin-left: 10px;
-        }
-
         table {
             width: 60%;
             margin: 20px auto;
@@ -36,27 +29,16 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             border-radius: 10px;
         }
-
         th, td {
             padding: 15px;
             border: 1px solid #ddd;
             text-align: center;
         }
-
         th {
             background-color: #e74c3c;
             color: white;
             font-weight: bold;
         }
-
-        td {
-            background-color: #fff;
-        }
-
-        tr:hover > td {
-            background-color: #F6F6F6;
-        }
-
         .button {
             margin-top: 20px;
             padding: 10px 20px;
@@ -68,69 +50,35 @@
             cursor: pointer;
             text-decoration: none;
         }
-
         .button:hover {
             background-color: #d43f31;
         }
-
-        .footer {
-            margin-top: 40px;
-            font-size: 14px;
-            color: #888;
-        }
-
-        .leader .name::after {
-            content: " 👑";
-        }
-
-        .member .name::after {
-            content: " 🧑‍💼";
-        }
     </style>
+    <script>
+        // URL 파라미터에서 이름 가져와서 Contact 제목에 추가
+        const params = new URLSearchParams(window.location.search);
+        const name = params.get('name');
+        if (name) {
+            document.addEventListener('DOMContentLoaded', () => {
+                document.getElementById('contact-name').textContent = name;
+            });
+        }
+    </script>
 </head>
 <body>
     <div class="contact-header">
-        Contact <span>📞</span>
+        Contact <span id="contact-name">📞</span>
     </div>
-
-    <!-- 연락처 정보를 표 형식으로 표시 -->
     <table>
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Phone</th>
-            </tr>
-        </thead>
-        <tbody>
-            <!-- 팀장 정보 -->
-            <tr id="teamLeaderRow" class="leader">
-                <td id="teamLeaderName">{{ Name }}</td>
-                <td>{{ Email }}</td>
-                <td>{{ PhoneNumber }}</td>
-            </tr>
-
-            <!-- 다른 팀원들 정보 -->
-            <tr id="member1Row" class="member">
-                <td id="member1Name">{{ MemberName1 }}</td>
-                <td>{{ MemberEmail1 }}</td>
-                <td>{{ MemberPhone1 }}</td>
-            </tr>
-
-            <tr id="member2Row" class="member">
-                <td id="member2Name">{{ MemberName2 }}</td>
-                <td>{{ MemberEmail2 }}</td>
-                <td>{{ MemberPhone2 }}</td>
-            </tr>
-        </tbody>
+        <tr>
+            <th>Email</th>
+            <th>Phone</th>
+        </tr>
+        <tr>
+            <td><a href="mailto:{{ email }}">{{ email }}</a></td>
+            <td>{{ phone }}</td>
+        </tr>
     </table>
-
-    <!-- 메인 페이지로 돌아가는 버튼 -->
-    <a href="/" class="button">Go back</a>
-
-    <div class="footer">
-        <p>팀 CROSS</p>
-    </div>
-
+    <a href="#" onclick="window.close();" class="button">닫기</a>
 </body>
 </html>
