@@ -24,4 +24,4 @@ def result():
     return render_template('result.html', Name=name, StudentNumber=student_number, Gender=gender, Major=major, Languages=', '.join(programming_languages))
 
 if __name__ == '__main__':
-    app.run(debug=True)  # 애플리케이션 실행
+    app.run(debug=True, host="0.0.0.0")  # 애플리케이션 IP 설정 후 실행
