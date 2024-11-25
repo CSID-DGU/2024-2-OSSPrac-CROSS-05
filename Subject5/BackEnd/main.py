@@ -2,6 +2,16 @@ from flask import Flask, request
 
 app = Flask(__name__)
 
+# 기본 홈 경로
+@app.route('/')
+def home():
+    return "Welcome to the Backend Server!"
+
+# favicon 요청 처리
+@app.route('/favicon.ico')
+def favicon():
+    return '', 204
+
 # 프론트엔드에서 데이터를 받아 처리
 @app.route('/process', methods=['POST'])
 def process_data():
