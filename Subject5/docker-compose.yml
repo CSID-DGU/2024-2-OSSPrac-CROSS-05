@@ -1,13 +1,18 @@
-version: "3.0"                 # docker compose 파일의 버전
+version: "3.0"  # docker compose 파일의 버전
 
-services: # 아래는 서비스 정의  
-   frontapp:                   # service1의 명칭  
-      # 서비스 빌드를 위한 정의 내용
-      build:  ~~~ 
-      image: ~~~
-      ports: 
-         - ~~~
+services:  # 아래는 서비스 정의
+  frontapp:  # Frontend 서비스
+    build:
+      context: ./FrontEnd  # FrontEnd 디렉토리에서 Dockerfile 빌드
+    image: frontapp_image  # Frontend 컨테이너 이미지 이름
+    ports:
+      - "5000:5000"  # 로컬 5000번 포트를 컨테이너의 5000번 포트에 매핑
+    depends_on:  # backapp 서비스가 준비되기를 기다림
+      - backapp
 
-   backapp:                   # service2의 명칭  
-      # 서비스 빌드를 위한 정의 내용
-      build: ~~~
+  backapp:  # Backend 서비스
+    build:
+      context: ./BackEnd  # BackEnd 디렉토리에서 Dockerfile 빌드
+    image: backapp_image  # Backend 컨테이너 이미지 이름
+    ports:
+      - "5001:5001"  # 로컬 5001번 포트를 컨테이너의 5001번 포트에 매핑
