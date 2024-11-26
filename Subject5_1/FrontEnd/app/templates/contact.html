@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>Contact Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            text-align: center;
+            flex-direction: column;
+        }
+        .contact-header {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 30px;
+        }
+        table {
+            width: 60%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            background-color: #ffffff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+        th, td {
+            padding: 15px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+        th {
+            background-color: #e74c3c;
+            color: white;
+            font-weight: bold;
+        }
+        .button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            color: #ffffff;
+            background-color: #e74c3c;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .button:hover {
+            background-color: #d43f31;
+        }
+    </style>
+    <script>
+        // URL 파라미터에서 이름 가져와서 Contact 제목에 추가
+        const params = new URLSearchParams(window.location.search);
+        const name = params.get('name');
+        if (name) {
+            document.addEventListener('DOMContentLoaded', () => {
+                document.getElementById('contact-name').textContent = name;
+            });
+        }
+    </script>
+</head>
+<body>
+    <div class="contact-header">
+        Contact <span id="contact-name">📞</span>
+    </div>
+    <table>
+        <tr>
+            <th>Email</th>
+            <th>Phone</th>
+        </tr>
+        <tr>
+            <td><a href="mailto:{{ email }}">{{ email }}</a></td>
+            <td>{{ phone }}</td>
+        </tr>
+    </table>
+    <a href="#" onclick="window.close();" class="button">닫기</a>
+</body>
+</html>
