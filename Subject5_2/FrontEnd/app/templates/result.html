@@ -185,7 +185,7 @@
                     Member
                 {% endif %}
             </span>
-            <img src="{{ member.profilePicture }}" alt="Profile Picture" class="profile-img">
+            <img src="{{ url_for('static', filename='leader.png') if member.role == '팀장' else url_for('static', filename='member.png') }}" alt="Profile Picture" class="profile-img">
             <div class="info">
                 <p><strong>이름:</strong> {{ member.name }}</p>
                 <p><strong>학과:</strong> {{ member.major }}</p>
