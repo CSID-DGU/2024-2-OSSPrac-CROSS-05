@@ -1,10 +1,10 @@
-version: "3.8"  # docker compose 파일의 버전
+version: "3.8"  # docker-compose 파일의 버전
 
-services:  # 아래는 서비스 정의
+services:
   frontapp:  # Frontend 서비스
     build:
       context: ./FrontEnd  # FrontEnd 디렉토리에서 Dockerfile 빌드
-    image: dockerhub-username/frontapp:latest  # Frontend 컨테이너 이미지 이름
+    image: frontapp_image  # Frontend 컨테이너 이미지 이름
     ports:
       - "5000:5000"  # 로컬 5000번 포트를 컨테이너의 5000번 포트에 매핑
     depends_on:  # backapp 서비스가 준비되기를 기다림
@@ -23,4 +23,4 @@ services:  # 아래는 서비스 정의
 
 networks:
   app_network:
-    driver: bridge 
+    driver: bridge

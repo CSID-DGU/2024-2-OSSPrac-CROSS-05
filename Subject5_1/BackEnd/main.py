@@ -1,44 +1,30 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request
 
 app = Flask(__name__)
+ 
+# 기본 홈 경로
+@app.route('/')
+def home():
+    return "Welcome to the CROSS Backend Server!"
 
-# '/process' 경로로 POST 요청 처리
+# favicon 요청 처리
+@app.route('/favicon.ico')
+def favicon():
+    return '', 204
+
+# 프론트엔드에서 데이터를 받아 처리
 @app.route('/process', methods=['POST'])
-def process():
-    data = request.get_json()
-    print("Received data from frontend:", data)  # 디버깅용 출력
+def process_data():
+    # 프론트엔드에서 전달받은 데이터
+    name = request.form.get('Name', 'Unknown')
+    student_number = request.form.get('StudentNumber', 'Unknown')
+    gender = request.form.get('Gender', 'Unknown')
+    major = request.form.get('Major', 'Unknown')
+    programming_languages = request.form.getlist('PL_list')
 
-    team_name = data.get('team_name', [''])[0]
-    names = data.get('name[]', [])
-    majors = data.get('major[]', [])
-    roles = data.get('role[]', [])
-    phones = data.get('phone[]', [])
-    email_locals = data.get('emailLocal[]', [])
-    email_domains = data.get('emailDomain[]', [])
-
-    team_members = []
-    for name, major, role, phone, email_local, email_domain in zip(
-            names, majors, roles, phones, email_locals, email_domains):
-        member = {
-            'name': name,
-            'major': major,
-            'role': role,
-            'phone': phone,
-            'email': f"{email_local}@{email_domain}",
-            'profilePicture': 'static/leader.png' if role == '팀장' else 'static/member.png'
-        }
-        team_members.append(member)
-        print("Processed member:", member)  # 디버깅용 출력
-
-    team_members.sort(key=lambda x: x['role'] != '팀장')
-
-    response = {
-        'team_name': team_name,
-        'team_members': team_members
-    }
-    print("Response to frontend:", response)  # 디버깅용 출력
-    return jsonify(response)
-
+    # 결과 데이터를 플레인 텍스트 형식으로 반환
+    result_data = f"{name}|{student_number}|{gender}|{major}|{','.join(programming_languages)}"
+    return result_data
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=5001)
+    app.run(debug=True, host="0.0.0.0", port=5001)  # BackEnd는 5001번 포트에서 실행
