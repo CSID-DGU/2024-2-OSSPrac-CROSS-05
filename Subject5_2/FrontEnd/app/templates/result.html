@@ -178,7 +178,13 @@
     <div class="container" id="team-info">
         {% for member in teamMembers %}
         <div class="member-block" onclick="openContact('{{ member.name }}', '{{ member.email }}', '{{ member.phone }}')">
-            <span class="label">{{ 'Leader' if member.role == '팀장' else 'Member' }}</span>
+            <span class="label">
+                {% if member.role == '팀장' %}
+                    Leader
+                {% else %}
+                    Member
+                {% endif %}
+            </span>
             <img src="{{ member.profilePicture }}" alt="Profile Picture" class="profile-img">
             <div class="info">
                 <p><strong>이름:</strong> {{ member.name }}</p>
@@ -187,6 +193,7 @@
         </div>
         {% endfor %}
     </div>
+    
 
     <!-- 버튼 그룹 -->
     <div class="button-group">

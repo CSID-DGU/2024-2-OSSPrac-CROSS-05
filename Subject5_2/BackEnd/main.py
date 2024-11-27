@@ -18,7 +18,7 @@ def process_data():
     team_name = request.form.get('team_name')
     names = request.form.getlist('name[]')
     majors = request.form.getlist('major[]')
-    roles = [request.form.get(f'role_{i}') for i in range(len(names))]
+    roles = request.form.getlist('role[]')
     phones = request.form.getlist('phone[]')
     email_locals = request.form.getlist('emailLocal[]')
     email_domains = request.form.getlist('emailDomain[]')
