@@ -12,6 +12,7 @@ def home():
 def favicon():
     return '', 204
 
+# 프론트엔드에서 데이터를 받아 처리
 @app.route('/process', methods=['POST'])
 def process_data():
     # 클라이언트에서 전달받은 데이터 처리
@@ -28,12 +29,6 @@ def process_data():
     for i, (name, major, role, phone, email_local, email_domain) in enumerate(
             zip(names, majors, roles, phones, email_locals, email_domains)):
         
-        # 역할에 따라 프로필 이미지 URL 설정
-        if role == '팀장':
-            profile_picture_url = url_for('static', filename='leader.png', _external=True)
-        else:
-            profile_picture_url = url_for('static', filename='member.png', _external=True)
-        
         member = {
             'name': name,
             'major': major,
@@ -43,7 +38,7 @@ def process_data():
         }
         team_members.append(member)
 
-    # 팀장 우선 정렬
+    # 팀장을 맨 앞으로 정렬
     team_members.sort(key=lambda x: x['role'] != '팀장')
 
     # JSON 응답 반환
