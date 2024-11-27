@@ -4,7 +4,7 @@ FROM python:3
 # 작업 디렉토리 설정
 WORKDIR /usr/src/app
 
-# requirements.txt 복사
+# requirements.txt 복사 
 COPY requirements.txt ./
 
 # Python 패키지 설치

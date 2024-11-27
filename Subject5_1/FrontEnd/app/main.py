@@ -3,8 +3,8 @@ import requests
 
 app = Flask(__name__)
 
-# 입력 페이지 렌더링
-@app.route('/')
+# 입력 페이지 렌더링 
+@app.route('/') 
 def main():
     return render_template('input_info.html')
 

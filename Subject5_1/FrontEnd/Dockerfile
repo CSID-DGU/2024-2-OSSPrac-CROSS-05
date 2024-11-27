@@ -28,3 +28,4 @@ COPY . /app
 
 # 애플리케이션 실행 명령
 CMD ["python3", "app/main.py"]
+ 

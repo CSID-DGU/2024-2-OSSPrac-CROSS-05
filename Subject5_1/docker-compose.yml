@@ -23,4 +23,4 @@ services:  # 아래는 서비스 정의
 
 networks:
   app_network:
-    driver: bridge
+    driver: bridge 

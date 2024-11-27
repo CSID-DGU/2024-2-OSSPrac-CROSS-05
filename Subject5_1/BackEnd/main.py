@@ -1,7 +1,7 @@
 from flask import Flask, request
 
 app = Flask(__name__)
-
+ 
 # 기본 홈 경로
 @app.route('/')
 def home():
