@@ -2,196 +2,97 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>팀 구성원 정보 출력</title>
+    <title>result Page</title>
     <style>
         body {
-            background-color: #f9f9f9;
             font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            margin: 10px;
+            margin: 0;
             text-align: center;
             flex-direction: column;
         }
-        h1 {
-            padding-bottom: 20px;
-        }
-        .container {
-            display: grid;
-            justify-content: center;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 3vh 3vw;
-            width: 100%;
-            max-width: 800px;
-        }
-        .member-block {
-            display: flex;
-            align-items: center;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-            background-color: #f9f9f9;
-            position: relative;
-            padding: 15px;
-            transition: background-color 0.3s;
-            cursor: pointer;
-        }
-        .member-block:hover {
-            background-color: #EAEAEA;
-        }
-        .label {
-            position: absolute;
-            top: -10px;
-            right: 10px;
-            background-color: #e74c3c;
-            color: #ffffff;
-            padding: 5px 10px;
-            font-size: 12px;
-            font-weight: bold;
-            border-radius: 5px;
-        }
-        .profile-img {
-            width: 70px;
-            height: 70px;
-            margin-right: 20px;
-            border-radius: 50%;
-            object-fit: cover;
-        }
-        .info {
-            flex-grow: 1;
-            text-align: left;
-        }
-        .button-group {
-            display: flex;
-            gap: 10px;
-            margin-top: 20px;
-        }
-        .action-button {
-            display: inline-flex;
-            align-items: center;
-            padding: 7px 15px;
+
+        table {
             background-color: #ffffff;
-            color: #333333;
-            border: 1.5px solid #333333;
-            border-radius: 5px;
-            font-size: 15px;
+            border-collapse: collapse;
+            width: 30%;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 0 auto;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 15px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #e74c3c;
+            color: white;
             font-weight: bold;
+        }
+
+        td {
+            background-color: #ffffff;
+        }
+
+        .button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            color: #ffffff;
+            background-color: #e74c3c;
+            border: none;
+            border-radius: 5px;
             cursor: pointer;
             text-decoration: none;
-            transition: background-color 0.3s, color 0.3s;
         }
-        .action-button:hover {
-            background-color: #f0f0f0;
-            color: #000000;
+
+        tr:hover > td {
+            background-color: #F6F6F6;
         }
-        .save-button::before {
-            content: "\1F4BE";
-            font-size: 15px;
-            margin-right: 8px;
-        }
-        .edit-button::before {
-            content: "\1F4DD";
-            font-size: 15px;
-            margin-right: 8px;
-        }
-        .info-icon {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            font-size: 30px;
-            cursor: pointer;
-        }
-        .tooltip {
-            position: fixed;
-            top: 60px;
-            right: 20px;
-            background-color: #333;
-            color: #fff;
-            padding: 10px;
-            border-radius: 5px;
-            font-size: 16px;
-            display: none;
-            transition: opacity 0.5s ease;
-            opacity: 0;
-        }
-        .tooltip.show {
-            display: block;
-            opacity: 1;
+
+        tr:hover > th {
+            background-color: #CC3D3D;
+        }    
+
+        .button:hover {
+            background-color: #d43f31;
         }
     </style>
-    <!-- html2pdf.js 라이브러리 추가 -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
-    <script>
-        // 연락처 창 열기
-        function openContact(name, email, phone) {
-            const url = `/contact?name=${encodeURIComponent(name)}&email=${encodeURIComponent(email)}&phone=${encodeURIComponent(phone)}`;
-            window.open(url, "contactPage", "width=600,height=400");
-        }
-
-        // 입력 폼으로 돌아가는 함수
-        function goToEditForm() {
-            window.location.href = "/input"; // 입력 폼의 경로로 이동
-        }
-
-        // PDF로 저장하는 함수
-        function saveAsPDF() {
-            const element = document.querySelector('body');  // 전체 화면을 PDF로 저장
-            const options = {
-                margin: 0,
-                filename: '{{ team_name }}_info.pdf',  // 팀명 기반 파일명 설정
-                image: { type: 'jpeg', quality: 0.98 },
-                html2canvas: { scale: 2 },
-                jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
-            };
-
-            // PDF 저장 시 버튼들을 임시로 숨김
-            document.querySelector('.button-group').style.display = 'none';
-            document.querySelector('.info-icon').style.display = 'none';
-            html2pdf().set(options).from(element).save().then(() => {
-                // PDF 저장 후 버튼 다시 표시
-                document.querySelector('.button-group').style.display = 'flex';
-                document.querySelector('.info-icon').style.display = 'block';
-            });
-        }
-
-        // 정보 아이콘 클릭 시 말풍선 메시지 표시
-        function showInfoMessage() {
-            const tooltip = document.querySelector('.tooltip');
-            tooltip.classList.add('show');
-            setTimeout(() => {
-                tooltip.classList.remove('show');
-            }, 3000);
-        }
-    </script>
 </head>
 <body>
-    <!-- 정보 아이콘 버튼 -->
-    <div class="info-icon" onclick="showInfoMessage()">ℹ️</div>
-    <div class="tooltip">카드 클릭시 연락처 정보 조회 가능</div>
-    
-    <!-- 입력받은 팀명을 제목에 표시 -->
-    <h1>📚 {{ team_name }} 구성원 📚</h1>
-    
-    <div class="container" id="team-info">
-        {% for member in teamMembers %}
-        <div class="member-block" onclick="openContact('{{ member.name }}', '{{ member.email }}', '{{ member.phone }}')">
-            <span class="label">{{ 'Leader' if member.role == '팀장' else 'Member' }}</span>
-            <img src="{{ member.profilePicture }}" alt="Profile Picture" class="profile-img">
-            <div class="info">
-                <p><strong>이름:</strong> {{ member.name }}</p>
-                <p><strong>학과:</strong> {{ member.major }}</p>
-            </div>
-        </div>
-        {% endfor %}
-    </div>
+    <!-- 사용자가 입력한 결과를 표시하는 테이블 -->
+    <table>
+        <tr>
+            <th>Name</th>
+            <td>{{ Name }}</td>
+        </tr>
+        <tr>
+            <th>Student Number</th>
+            <td>{{ StudentNumber }}</td>
+        </tr>
+        <tr>
+            <th>Gender</th>
+            <td>{{ Gender }}</td>
+        </tr>
+        <tr>
+            <th>Major</th>
+            <td>{{ Major }}</td>
+        </tr>
+        <tr>
+            <th>Languages</th>
+            <td>{% if Languages %}{{ Languages }}{% endif %}{% if OtherPL and OtherPL != "" %}{% if Languages %}, {% endif %}{{ OtherPL }}{% endif %}</td>
+        </tr>
+    </table>
 
-    <!-- 버튼 그룹 -->
-    <div class="button-group">
-        <button class="action-button edit-button" onclick="goToEditForm()">다시 입력</button>
-        <button class="action-button save-button" onclick="saveAsPDF()">PDF로 저장</button>
-    </div>
+    <!-- 메인 페이지로 돌아가는 버튼 -->
+    <a href="/" class="button">Go back</a>
 </body>
 </html>
