@@ -1,0 +1,53 @@
+pipeline {
+    agent any  
+
+    triggers {
+        pollSCM('*/3 * * * *') // 레포지토리로부터 변경사항이 있는지 3분단위로 확인
+    } 
+
+    environment {
+        DOCKER = credentials('docker-hub') // Jenkins credentials에서 설정한 Docker 아이디
+    } 
+
+    stages {
+        stage('Prepare') {
+            agent any
+            steps {
+                // Git에서 프로젝트 클론
+                git url: 'https://github.com/CSID-DGU/2024-2-OSSPrac-CROSS-05.git',
+                    branch: 'main',
+                    credentialsId: 'github'
+            }
+        }
+
+        stage('Build') {
+            steps {
+                // Docker Compose를 사용하여 frontapp과 backapp 빌드
+                dir('Subject6') {
+                    sh 'docker compose -f docker-compose.yml build frontapp backapp'
+                }
+            }
+        }
+
+        stage('Tag') {
+            steps {
+                script {
+                    // Docker 이미지 태깅 (frontapp과 backapp)
+                    sh "docker tag frontapp_image ${DOCKER_USR}/frontapp_image:${BUILD_NUMBER}.0"
+                    sh "docker tag backapp_image ${DOCKER_USR}/backapp_image:${BUILD_NUMBER}.0"
+                }
+            }
+        }
+
+        stage('Push') {
+            steps {
+                script {
+                    // Docker 이미지 업로드 (frontapp과 backapp)
+                    sh "docker login -u $DOCKER_USR -p $DOCKER_PSW"
+                    sh "docker push ${DOCKER_USR}/frontapp_image:${BUILD_NUMBER}.0"
+                    sh "docker push ${DOCKER_USR}/backapp_image:${BUILD_NUMBER}.0"
+                }
+            }
+        }
+    }
+}
